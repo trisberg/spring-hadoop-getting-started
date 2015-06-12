@@ -1,0 +1,55 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+        classpath("io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+apply plugin: 'io.spring.dependency-management' 
+
+jar {
+    baseName = 'hello-hadoop'
+    version = '0.1.0'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+// Spring for Apache Hadoop versions:
+ext['spring.data.hadoop.version'] = '2.2.0.RELEASE'
+ext['hadoop.version'] = '2.6.0'
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
+}
+
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-autoconfigure")
+    compile("org.springframework.boot:spring-boot-starter-log4j")
+    compile("org.springframework.data:spring-data-hadoop-boot:2.2.0.RELEASE")
+    compile("log4j:log4j")
+}
+
+
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
